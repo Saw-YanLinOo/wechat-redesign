@@ -32,7 +32,7 @@ class ContantPage extends StatelessWidget {
               fontFamily: YorkieDEMO,
               fontWeight: FontWeight.w600,
               fontSize: TEXT_BIG,
-              color: PRIMARY_COLOR,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
             ),
           ),
           actions: [
@@ -58,16 +58,18 @@ class ContantPage extends StatelessWidget {
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: 'Search',
+                    hintStyle:
+                        TextStyle(color: Theme.of(context).iconTheme.color),
                     filled: true,
                     fillColor: PRIMARY_COLOR.withOpacity(0.3),
                     border: InputBorder.none,
                     prefixIcon: Icon(
                       Icons.search,
-                      color: PRIMARY_COLOR,
+                      color: Theme.of(context).iconTheme.color,
                     ),
                     suffixIcon: Icon(
                       Icons.clear,
-                      color: PRIMARY_COLOR,
+                      color: Theme.of(context).iconTheme.color,
                     ),
                   ),
                 ),
@@ -80,7 +82,7 @@ class ContantPage extends StatelessWidget {
                 'Group',
                 style: TextStyle(
                   fontFamily: YorkieDEMO,
-                  color: PRIMARY_COLOR,
+                  color: Theme.of(context).iconTheme.color,
                   fontSize: TEXT_REGULAR_2X,
                   fontWeight: FontWeight.bold,
                 ),
@@ -125,7 +127,8 @@ class ContantPage extends StatelessWidget {
                                   height: 100,
                                   clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
                                     borderRadius:
                                         BorderRadius.circular(MARGIN_MEDIUM),
                                   ),
@@ -155,6 +158,11 @@ class ContantPage extends StatelessWidget {
                                             '${group?.name}',
                                             maxLines: 1,
                                             textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.color),
                                           ),
                                         )
                                       ],
@@ -207,11 +215,21 @@ class ContantPage extends StatelessWidget {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Image.network(
-                                    '${user.profilePhoto}',
+                                    '${user.profilePhoto ?? ''}',
                                     fit: BoxFit.cover,
+                                    errorBuilder: (context, _, __) {
+                                      return Image.asset('assets/logo.png');
+                                    },
                                   ),
                                 ),
-                                title: Text('${user.userName}'),
+                                title: Text(
+                                  '${user.userName}',
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color),
+                                ),
                               );
                             },
                             separatorBuilder:

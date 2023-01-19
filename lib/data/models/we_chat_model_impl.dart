@@ -7,6 +7,7 @@ import 'package:wechat_redesign/data/vos/moment_vo.dart';
 import 'package:wechat_redesign/data/vos/user_vo.dart';
 import 'package:wechat_redesign/network/cloud_firestore_data_agent_impl.dart';
 import 'package:wechat_redesign/network/we_chat_data_agent.dart';
+import 'package:wechat_redesign/persistence/daos/moment_dao_impl.dart';
 
 class WeChatModelImpl extends WeChatModel {
   WeChatModelImpl._();
@@ -15,8 +16,12 @@ class WeChatModelImpl extends WeChatModel {
 
   factory WeChatModelImpl() => _singleton;
 
+  // Network Data Agent
   final WeChatDataAgent dataAgent = CloudFireStoreDataAgentImpl();
   final AuthenticationModel authModel = AuthenticationModelImpl();
+
+  // Persistence DAO
+  final MomentDaoImpl momentDao = MomentDaoImpl();
 
   @override
   Future<void> addNewMoment(String description, List<File>? files) {
@@ -37,7 +42,7 @@ class WeChatModelImpl extends WeChatModel {
     var time = DateTime.now().microsecondsSinceEpoch;
 
     var newFeed = MomentVO(
-      id: time,
+      id: '$time',
       description: description,
       postImages: imageUrl,
       timeStamp: '${DateTime.now()}',
@@ -65,7 +70,7 @@ class WeChatModelImpl extends WeChatModel {
   }
 
   @override
-  Future<void> deleteNewMoment(int postId) {
+  Future<void> deleteNewMoment(String postId) {
     return dataAgent.deleteNewMoment(postId);
   }
 
@@ -76,11 +81,16 @@ class WeChatModelImpl extends WeChatModel {
 
   @override
   Stream<List<MomentVO>> getNewMoment() {
-    return dataAgent.getNewMoment();
+    return dataAgent.getNewMoment().map((event) {
+      return event.map((e) {
+        e.updateReaction("${authModel.getLoggedInUser().id}");
+        return e;
+      }).toList();
+    });
   }
 
   @override
-  Stream<MomentVO> getNewMomentById(int postId) {
+  Stream<MomentVO> getNewMomentById(String postId) {
     return dataAgent.getNewMomentById(postId);
   }
 
@@ -107,5 +117,30 @@ class WeChatModelImpl extends WeChatModel {
         .then((user) {
       user?.activeTime = DateTime.now().toIso8601String();
     });
+  }
+
+  @override
+  Stream<List<MomentVO>?> getBookMartMovement() {
+    return momentDao.getMomentListStream();
+  }
+
+  @override
+  Future<void> saveMoment(MomentVO moment) {
+    return momentDao.saveMoment(moment);
+  }
+
+  @override
+  Future<void> addBookMarkMoment(String uid, MomentVO moment) {
+    return dataAgent.addBookMarkMomentByUid(uid, moment);
+  }
+
+  @override
+  Stream<List<MomentVO>> getBookMarkMomentByUid(String uid) {
+    return dataAgent.getBookMarkMomentByUid(uid);
+  }
+
+  @override
+  Future<void> removeBookMarkMomentByUid(String uid, String momentId) {
+    return dataAgent.removeBookMarkMomentByUid(uid, momentId);
   }
 }

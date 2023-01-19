@@ -19,7 +19,7 @@ class AddMomentPage extends StatelessWidget {
     this.momentId,
   }) : super(key: key);
 
-  final int? momentId;
+  final String? momentId;
 
   @override
   Widget build(BuildContext context) {
@@ -106,10 +106,13 @@ class MomentDescriptionSection extends StatelessWidget {
         controller: TextEditingController(text: bloc.description),
         maxLines: 12,
         autofocus: true,
+        cursorColor: Theme.of(context).textTheme.bodySmall?.color,
+        style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
         decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: "What's in your mind?",
-        ),
+            border: InputBorder.none,
+            hintText: "What's in your mind?",
+            hintStyle:
+                TextStyle(color: Theme.of(context).textTheme.bodySmall?.color)),
         onChanged: bloc.setDescription,
       );
     });
@@ -283,7 +286,7 @@ class ProfileSection extends StatelessWidget {
           Text(
             '${bloc.userName ?? ''}',
             style: TextStyle(
-              color: PRIMARY_COLOR,
+              color: Theme.of(context).textTheme.bodyMedium?.color,
               fontSize: TEXT_REGULAR_2X,
               fontWeight: FontWeight.w700,
             ),
@@ -324,7 +327,7 @@ class AppBarSection extends StatelessWidget {
               fontFamily: YorkieDEMO,
               fontWeight: FontWeight.w600,
               fontSize: TEXT_BIG,
-              color: PRIMARY_COLOR,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
             ),
           ),
           Padding(

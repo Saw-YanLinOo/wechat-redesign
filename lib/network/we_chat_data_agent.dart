@@ -16,10 +16,14 @@ abstract class WeChatDataAgent {
 
   Stream<List<MomentVO>> getNewMoment();
   Future<void> addNewMoment(MomentVO newMoment);
-  Future<void> deleteNewMoment(int postId);
-  Stream<MomentVO> getNewMomentById(int postId);
+  Future<void> deleteNewMoment(String postId);
+  Stream<MomentVO> getNewMomentById(String postId);
   Future<String> uploadFileToFirebase(File file);
   Future<UserVO?> getUserFromDatabse(String uid);
+
+  Future<void> addBookMarkMomentByUid(String uid, MomentVO moment);
+  Future<void> removeBookMarkMomentByUid(String uid, String momentId);
+  Stream<List<MomentVO>> getBookMarkMomentByUid(String uid);
 
   Future<void> addNewContant(UserVO sender, UserVO reciver);
   Stream<List<UserVO>?> getUserContant(String uid);

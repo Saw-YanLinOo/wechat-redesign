@@ -9,17 +9,64 @@ import 'package:wechat_redesign/utils/extensions.dart';
 
 import '../resources/dimens.dart';
 
-class PostItemView extends StatelessWidget {
+enum ReactionType {
+  like,
+  heart,
+  haha,
+}
+
+class PostItemView extends StatefulWidget {
   const PostItemView({
     Key? key,
     this.moment,
+    this.uid,
     required this.onTapEdit,
     required this.onTapDelete,
+    required this.onTapSaved,
+    required this.onTapLiked,
   }) : super(key: key);
 
   final MomentVO? moment;
+  final String? uid;
   final Function onTapEdit;
   final Function onTapDelete;
+  final Function(bool) onTapSaved;
+  final Function(bool) onTapLiked;
+
+  @override
+  State<PostItemView> createState() => _PostItemViewState();
+}
+
+class _PostItemViewState extends State<PostItemView> {
+  void onTapLiked() {
+    if (widget.moment?.isLike == true) {
+      widget.moment?.isLike = false;
+      widget.onTapLiked(true);
+      widget.moment?.reactions?.remove("${widget.uid}");
+      setState(() {});
+    } else {
+      widget.moment?.isLike = true;
+      widget.onTapLiked(false);
+
+      widget.moment?.reactions ??= {};
+      widget.moment?.reactions
+          ?.addAll({"${widget.uid}": ReactionType.like.name});
+      setState(() {});
+    }
+  }
+
+  void onTapSaved() {
+    if (widget.moment?.isBookMarks == true) {
+      widget.moment?.isBookMarks = false;
+      widget.onTapSaved(false);
+      setState(() {});
+    } else {
+      widget.moment?.isBookMarks = true;
+      widget.onTapSaved(true);
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -49,7 +96,7 @@ class PostItemView extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       child: Image.network(
-                        '${moment?.profilePicture}',
+                        '${widget.moment?.profilePicture}',
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -60,9 +107,10 @@ class PostItemView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${moment?.userName ?? 'User'}",
+                          "${widget.moment?.userName ?? 'User'}",
                           style: TextStyle(
-                            color: PRIMARY_COLOR,
+                            color:
+                                Theme.of(context).textTheme.bodyMedium?.color,
                             fontSize: TEXT_REGULAR_2X,
                             fontWeight: FontWeight.w600,
                           ),
@@ -73,7 +121,7 @@ class PostItemView extends StatelessWidget {
                         Text(
                           "15 min ago",
                           style: TextStyle(
-                            color: Colors.grey,
+                            color: Theme.of(context).textTheme.bodySmall?.color,
                             fontSize: TEXT_REGULAR,
                           ),
                         ),
@@ -86,14 +134,14 @@ class PostItemView extends StatelessWidget {
                   itemBuilder: (context) => [
                     PopupMenuItem(
                       onTap: () {
-                        onTapEdit();
+                        widget.onTapEdit();
                       },
                       child: Text("Edit"),
                       value: 'edit',
                     ),
                     PopupMenuItem(
                       onTap: () {
-                        onTapDelete();
+                        widget.onTapDelete();
                       },
                       child: Text("Delete"),
                       value: 'delete',
@@ -111,9 +159,9 @@ class PostItemView extends StatelessWidget {
               horizontal: MARGIN_MEDIUM_2,
             ),
             child: Text(
-              '${moment?.description ?? 'descriptions'}',
+              '${widget.moment?.description ?? 'descriptions'}',
               style: TextStyle(
-                color: PRIMARY_COLOR,
+                color: Theme.of(context).textTheme.bodySmall?.color,
               ),
             ),
           ),
@@ -121,19 +169,19 @@ class PostItemView extends StatelessWidget {
             height: MARGIN_MEDIUM,
           ),
           Visibility(
-            visible: moment?.postImages != null &&
-                (moment?.postImages?.isNotEmpty ?? false),
+            visible: widget.moment?.postImages != null &&
+                (widget.moment?.postImages?.isNotEmpty ?? false),
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: 250,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: moment?.postImages?.length ?? 0,
+                itemCount: widget.moment?.postImages?.length ?? 0,
                 padding: const EdgeInsets.symmetric(
                   horizontal: MARGIN_MEDIUM_2,
                 ),
                 itemBuilder: (context, index) {
-                  var url = moment?.postImages?[index];
+                  var url = widget.moment?.postImages?[index];
                   return Container(
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
@@ -162,15 +210,24 @@ class PostItemView extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(
-                      FontAwesomeIcons.heart,
-                      size: 24,
+                    InkWell(
+                      onTap: () {
+                        onTapLiked();
+                      },
+                      child: Icon(
+                          widget.moment?.isLike == true
+                              ? Icons.favorite
+                              : Icons.favorite_outline,
+                          size: 24,
+                          color: widget.moment?.isLike == true
+                              ? Colors.pink
+                              : Theme.of(context).iconTheme.color),
                     ),
                     SizedBox(
                       width: MARGIN_SMALL,
                     ),
                     Text(
-                      '3',
+                      '${widget.moment?.reactions?.length ?? 0}',
                       style: TextStyle(
                         fontSize: TEXT_REGULAR_2X,
                       ),
@@ -198,8 +255,18 @@ class PostItemView extends StatelessWidget {
                     SizedBox(
                       width: MARGIN_MEDIUM,
                     ),
-                    Icon(
-                      FontAwesomeIcons.bookmark,
+                    InkWell(
+                      onTap: () {
+                        onTapSaved();
+                      },
+                      child: Icon(
+                        widget.moment?.isBookMarks == true
+                            ? FontAwesomeIcons.solidBookmark
+                            : FontAwesomeIcons.bookmark,
+                        color: widget.moment?.isBookMarks == true
+                            ? Colors.pink
+                            : Theme.of(context).iconTheme.color,
+                      ),
                     ),
                   ],
                 ),

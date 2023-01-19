@@ -1,0 +1,8 @@
+const String KEY_THEME = 'KEY_THEME';
+
+// HIVE TYPE
+const int HIVE_TYPE_ID_MOMENT_VO = 1;
+
+// BOX NAME
+const String BOX_NAME_MOMENT_VO = 'BOX_NAME_MOMENT_VO';
+const String BOX_NAME_THEME = 'BOX_NAME_THEME';

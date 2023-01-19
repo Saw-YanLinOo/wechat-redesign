@@ -58,11 +58,14 @@ dependencies:
   auto_size_text: ^3.0.0
   flick_video_player: ^0.5.0
   path: ^1.8.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-    
+  
+  hive_generator:
   build_runner:
 
   # The "flutter_lints" package below contains a set of recommended lints to

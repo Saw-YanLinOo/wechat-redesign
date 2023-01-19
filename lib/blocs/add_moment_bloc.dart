@@ -34,7 +34,7 @@ class AddMomentBloc extends ChangeNotifier {
   final AuthenticationModel authModel = AuthenticationModelImpl();
   final WeChatModel weChatModel = WeChatModelImpl();
 
-  AddMomentBloc(int? movementId) {
+  AddMomentBloc(String? movementId) {
     _loginUser = authModel.getLoggedInUser();
 
     if (movementId != null) {
@@ -76,7 +76,7 @@ class AddMomentBloc extends ChangeNotifier {
     notifySafely();
   }
 
-  void _prePopulateDataForEditMode(int momentId) {
+  void _prePopulateDataForEditMode(String momentId) {
     weChatModel.getNewMomentById(momentId).listen((moment) {
       debugPrint('moment ::: ${moment.toString()}');
       userName = moment.userName;

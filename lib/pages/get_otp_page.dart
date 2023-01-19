@@ -80,8 +80,24 @@ class GetOtpPage extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: TextField(
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color,
+                                    ),
+                                    cursorColor: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color,
                                     decoration: InputDecoration(
                                       labelText: 'Enter your Phone Number',
+                                      labelStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.color,
+                                      ),
                                     ),
                                     onChanged: bloc.onChangedPhone,
                                   ),
@@ -125,6 +141,9 @@ class GetOtpPage extends StatelessWidget {
                                 enableActiveFill: true,
                                 cursorColor: Colors.grey,
                                 cursorHeight: 10,
+                                textStyle: TextStyle(
+                                  color: Colors.black,
+                                ),
                                 pinTheme: PinTheme(
                                   shape: PinCodeFieldShape.box,
                                   borderRadius: BorderRadius.circular(5),

@@ -33,7 +33,7 @@ class MomentPage extends StatelessWidget {
               fontFamily: YorkieDEMO,
               fontWeight: FontWeight.w600,
               fontSize: TEXT_BIG,
-              color: PRIMARY_COLOR,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
             ),
           ),
           actions: [
@@ -51,10 +51,12 @@ class MomentPage extends StatelessWidget {
             itemBuilder: (context, index) {
               var moment = bloc.moments?[index];
 
+              // debugPrint('first bookmark ::: ${moment.toString()}');
               return PostItemView(
                 moment: moment,
+                uid: bloc.user?.id,
                 onTapDelete: () {
-                  bloc.onTapDelete(moment?.id ?? 0);
+                  bloc.onTapDelete(moment?.id ?? '');
                 },
                 onTapEdit: () {
                   Timer(const Duration(seconds: 1), () {
@@ -62,10 +64,19 @@ class MomentPage extends StatelessWidget {
                         context, AddMomentPage(momentId: moment?.id));
                   });
                 },
+                onTapSaved: (value) {
+                  bloc.onTapBookMarked(value, moment ?? MomentVO());
+                },
+                onTapLiked: (value) {
+                  bloc.onTapLike(
+                      value, moment ?? MomentVO(), ReactionType.like);
+                },
               );
             },
             separatorBuilder: (BuildContext context, int index) {
-              return const Divider();
+              return Divider(
+                color: Theme.of(context).textTheme.bodySmall?.color,
+              );
             },
           );
         }),

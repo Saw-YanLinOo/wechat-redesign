@@ -44,6 +44,10 @@ class LoginPage extends StatelessWidget {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: TEXT_BIG,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color,
                                   ),
                                 ),
                                 SizedBox(
@@ -53,9 +57,10 @@ class LoginPage extends StatelessWidget {
                                   'Login to continue',
                                   style: TextStyle(
                                     fontSize: TEXT_REGULAR,
-                                    color: PRIMARY_COLOR.withOpacity(
-                                      0.7,
-                                    ),
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color,
                                   ),
                                 ),
                               ],
@@ -79,8 +84,24 @@ class LoginPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 TextField(
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color,
+                                  ),
+                                  cursorColor: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color,
                                   decoration: InputDecoration(
                                     labelText: 'Enter your Email',
+                                    labelStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color,
+                                    ),
                                   ),
                                   onChanged: bloc.setEmail,
                                 ),
@@ -88,8 +109,24 @@ class LoginPage extends StatelessWidget {
                                   height: MARGIN_SMALL,
                                 ),
                                 TextField(
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color,
+                                  ),
+                                  cursorColor: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color,
                                   decoration: InputDecoration(
                                     labelText: 'Enter your Password',
+                                    labelStyle: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color,
+                                    ),
                                   ),
                                   onChanged: bloc.setPassword,
                                 ),
@@ -99,7 +136,10 @@ class LoginPage extends StatelessWidget {
                                 Text(
                                   'Forgot Password?',
                                   style: TextStyle(
-                                    color: PRIMARY_COLOR,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color,
                                   ),
                                 ),
                               ],

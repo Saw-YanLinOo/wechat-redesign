@@ -62,9 +62,10 @@ class RegisterPage extends StatelessWidget {
                                 'Create a new Account',
                                 style: TextStyle(
                                   fontSize: TEXT_REGULAR,
-                                  color: PRIMARY_COLOR.withOpacity(
-                                    0.7,
-                                  ),
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color,
                                 ),
                               ),
                             ],
@@ -313,8 +314,15 @@ class TextFieldPasswordView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<RegisterBloc>(builder: (context, bloc, child) {
       return TextField(
+        style: TextStyle(
+          color: Theme.of(context).textTheme.bodyMedium?.color,
+        ),
+        cursorColor: Theme.of(context).textTheme.bodyMedium?.color,
         decoration: InputDecoration(
           labelText: 'Enter Your Password',
+          labelStyle: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium?.color,
+          ),
         ),
         onChanged: bloc.setPassword,
       );
@@ -331,8 +339,15 @@ class TextFieldNameView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<RegisterBloc>(builder: (context, bloc, child) {
       return TextField(
+        style: TextStyle(
+          color: Theme.of(context).textTheme.bodyMedium?.color,
+        ),
+        cursorColor: Theme.of(context).textTheme.bodyMedium?.color,
         decoration: InputDecoration(
           labelText: 'Enter your Name',
+          labelStyle: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium?.color,
+          ),
         ),
         onChanged: bloc.setName,
       );
@@ -349,8 +364,15 @@ class TextFieldEmailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<RegisterBloc>(builder: (context, bloc, child) {
       return TextField(
+        style: TextStyle(
+          color: Theme.of(context).textTheme.bodyMedium?.color,
+        ),
+        cursorColor: Theme.of(context).textTheme.bodyMedium?.color,
         decoration: InputDecoration(
           labelText: 'Enter your Email',
+          labelStyle: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium?.color,
+          ),
         ),
         onChanged: bloc.setEmail,
       );
@@ -373,13 +395,17 @@ class TermAndServiceView extends StatelessWidget {
       children: [
         Checkbox(
             value: value,
+            side: BorderSide(
+              color:
+                  Theme.of(context).textTheme.bodyMedium?.color ?? Colors.grey,
+            ),
             onChanged: (value) {
               onTapCheckBox(value ?? true);
             }),
         Text(
           'Agree To Term And Service',
           style: TextStyle(
-            color: PRIMARY_COLOR,
+            color: Theme.of(context).textTheme.bodyMedium?.color,
             fontWeight: FontWeight.w700,
           ),
         )
@@ -408,17 +434,25 @@ class GenderItemView extends StatelessWidget {
       },
       child: Row(
         children: [
-          Radio(
-              value: gender.index,
-              groupValue: groupValue,
-              onChanged: (value) {
-                onTap(gender.index);
-              }),
+          Theme(
+            data: Theme.of(context).copyWith(
+              unselectedWidgetColor:
+                  Theme.of(context).textTheme.bodyMedium?.color,
+            ),
+            child: Radio(
+                value: gender.index,
+                groupValue: groupValue,
+                activeColor: Theme.of(context).textTheme.bodyMedium?.color,
+                onChanged: (value) {
+                  onTap(gender.index);
+                }),
+          ),
           Text(
             '${gender.name}',
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: TEXT_REGULAR_2X,
+              color: Theme.of(context).textTheme.bodyMedium?.color,
             ),
           ),
         ],
@@ -444,7 +478,12 @@ class DateItemView extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('$date'),
+            Text(
+              '$date',
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodySmall?.color,
+              ),
+            ),
             Icon(Icons.arrow_drop_down),
           ],
         ),

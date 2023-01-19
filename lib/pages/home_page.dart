@@ -27,11 +27,10 @@ class HomePage extends StatelessWidget {
                 bloc.changeIndex(value);
               },
               showUnselectedLabels: true,
-              selectedItemColor: PRIMARY_COLOR,
-              unselectedItemColor: Colors.grey,
               currentIndex: bloc.currentIndex,
               items: BottomNavItem.values.map((navigationBar) {
                 return BottomNavigationBarItem(
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   icon: Image.asset(
                     'assets/icons/${navigationBar.name}.png',
                     color: bloc.currentIndex == navigationBar.index
@@ -41,43 +40,6 @@ class HomePage extends StatelessWidget {
                   label: navigationBar.name,
                 );
               }).toList(),
-              // items: [
-              //   BottomNavigationBarItem(
-              //     icon: Image.asset(
-              //       'assets/icons/moment.png',
-              //       color: bloc.currentIndex == 0 ? PRIMARY_COLOR : Colors.grey,
-              //     ),
-              //     label: "Moment",
-              //   ),
-              //   BottomNavigationBarItem(
-              //     icon: Image.asset(
-              //       'assets/icons/chat.png',
-              //       color: bloc.currentIndex == 1 ? PRIMARY_COLOR : Colors.grey,
-              //     ),
-              //     label: "Chat",
-              //   ),
-              //   BottomNavigationBarItem(
-              //     icon: Image.asset(
-              //       'assets/icons/contant.png',
-              //       color: bloc.currentIndex == 2 ? PRIMARY_COLOR : Colors.grey,
-              //     ),
-              //     label: "Contant",
-              //   ),
-              //   BottomNavigationBarItem(
-              //     icon: Image.asset(
-              //       'assets/icons/me.png',
-              //       color: bloc.currentIndex == 3 ? PRIMARY_COLOR : Colors.grey,
-              //     ),
-              //     label: "Me",
-              //   ),
-              //   BottomNavigationBarItem(
-              //     icon: Image.asset(
-              //       'assets/icons/setting.png',
-              //       color: bloc.currentIndex == 4 ? PRIMARY_COLOR : Colors.grey,
-              //     ),
-              //     label: "Setting",
-              //   ),
-              // ],
             ),
           );
         },

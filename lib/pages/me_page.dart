@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:wechat_redesign/blocs/me_bloc.dart';
+import 'package:wechat_redesign/data/vos/moment_vo.dart';
 import 'package:wechat_redesign/data/vos/user_vo.dart';
 import 'package:wechat_redesign/pages/moment_page.dart';
 import 'package:wechat_redesign/resources/colors.dart';
@@ -51,7 +52,7 @@ class MePage extends StatelessWidget {
                   'Bookmarked Moments',
                   style: TextStyle(
                     fontFamily: YorkieDEMO,
-                    color: PRIMARY_COLOR,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                     fontSize: TEXT_HEADING_1X,
                     decoration: TextDecoration.underline,
                   ),
@@ -60,20 +61,36 @@ class MePage extends StatelessWidget {
               SizedBox(
                 height: MARGIN_MEDIUM_2,
               ),
-              ListView.separated(
-                shrinkWrap: true,
-                itemCount: 2,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return PostItemView(
-                    onTapDelete: () {},
-                    onTapEdit: () {},
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Divider();
-                },
-              ),
+              Selector<MeBloc, List<MomentVO>?>(
+                  selector: (p0, p1) => p1.moments,
+                  builder: (context, moments, child) {
+                    debugPrint(' total moments :: ${moments?.length}');
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: moments?.length ?? 0,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        var moment = moments?[index];
+                        return PostItemView(
+                          moment: moment,
+                          onTapDelete: () {},
+                          onTapEdit: () {},
+                          onTapSaved: (value) {
+                            context
+                                .read<MeBloc>()
+                                .onTapBookMarked(value, moment ?? MomentVO());
+                          },
+                          onTapLiked: (value) {
+                            context.read<MeBloc>().onTapLike(
+                                value, moment ?? MomentVO(), ReactionType.like);
+                          },
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Divider();
+                      },
+                    );
+                  }),
             ],
           ),
         ),
@@ -240,7 +257,7 @@ class AppBarSection extends StatelessWidget {
             fontFamily: YorkieDEMO,
             fontWeight: FontWeight.w600,
             fontSize: TEXT_BIG,
-            color: PRIMARY_COLOR,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
           ),
         ),
         Container(

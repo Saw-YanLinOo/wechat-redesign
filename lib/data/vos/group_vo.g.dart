@@ -11,9 +11,6 @@ GroupVO _$GroupVOFromJson(Map<String, dynamic> json) => GroupVO(
       name: json['name'] as String?,
       groupPhoto: json['group_photo'] as String?,
       ids: (json['ids'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      // messages: (json['messages'] as List<dynamic>?)
-      //     ?.map((e) => MessageVO.fromJson(e as Map<String, dynamic>))
-      //     .toList(),
       timeStamp: json['time_stamp'] as String?,
     );
 
@@ -22,6 +19,5 @@ Map<String, dynamic> _$GroupVOToJson(GroupVO instance) => <String, dynamic>{
       'name': instance.name,
       'group_photo': instance.groupPhoto,
       'ids': instance.ids,
-      // 'messages': instance.messages,
       'time_stamp': instance.timeStamp,
     };

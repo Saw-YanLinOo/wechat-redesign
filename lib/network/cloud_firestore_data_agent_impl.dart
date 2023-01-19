@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:wechat_redesign/data/vos/moment_vo.dart';
 import 'package:wechat_redesign/data/vos/otp_code_vo.dart';
@@ -14,6 +15,7 @@ const String userPath = 'users';
 const String authPath = 'auth';
 const fileBrucketName = 'uploads';
 const String userContantPath = 'contants';
+const String userBookMarkMomentPath = 'bookMarkMoments';
 
 class CloudFireStoreDataAgentImpl extends WeChatDataAgent {
   CloudFireStoreDataAgentImpl._();
@@ -96,14 +98,14 @@ class CloudFireStoreDataAgentImpl extends WeChatDataAgent {
   }
 
   @override
-  Future<void> deleteNewMoment(int postId) {
+  Future<void> deleteNewMoment(String postId) {
     return fireStore.collection(newMomentCollection).doc('$postId').delete();
   }
 
   @override
   Stream<List<MomentVO>> getNewMoment() {
     return fireStore
-        .collection(newMomentCollection)
+        .collectionGroup(newMomentCollection)
         .snapshots()
         .map((querySnapShot) {
       return querySnapShot.docs.map<MomentVO>((document) {
@@ -113,7 +115,7 @@ class CloudFireStoreDataAgentImpl extends WeChatDataAgent {
   }
 
   @override
-  Stream<MomentVO> getNewMomentById(int postId) {
+  Stream<MomentVO> getNewMomentById(String postId) {
     return fireStore
         .collection(newMomentCollection)
         .doc('$postId')
@@ -165,5 +167,39 @@ class CloudFireStoreDataAgentImpl extends WeChatDataAgent {
         return UserVO.fromJson(document.data());
       }).toList();
     });
+  }
+
+  @override
+  Future<void> addBookMarkMomentByUid(String uid, MomentVO moment) {
+    return fireStore
+        .collection(userPath)
+        .doc('${uid}')
+        .collection(userBookMarkMomentPath)
+        .doc('${moment.id}')
+        .set(moment.toJson());
+  }
+
+  @override
+  Stream<List<MomentVO>> getBookMarkMomentByUid(String uid) {
+    return fireStore
+        .collection(userPath)
+        .doc(uid)
+        .collection(userBookMarkMomentPath)
+        .snapshots()
+        .map((querySnapShot) {
+      return querySnapShot.docs.map<MomentVO>((document) {
+        return MomentVO.fromJson(document.data());
+      }).toList();
+    });
+  }
+
+  @override
+  Future<void> removeBookMarkMomentByUid(String uid, String momentId) {
+    return fireStore
+        .collection(userPath)
+        .doc('${uid}')
+        .collection(userBookMarkMomentPath)
+        .doc('${momentId}')
+        .delete();
   }
 }

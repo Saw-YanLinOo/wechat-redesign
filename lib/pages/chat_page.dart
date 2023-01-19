@@ -64,7 +64,10 @@ class ChatPage extends StatelessWidget {
                                     ),
                                     child: Image.network(
                                       '${user?.profilePhoto}',
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, _, __) {
+                                        return Image.asset('assets/logo.png');
+                                      },
                                     ),
                                   ),
                                   Positioned(
@@ -99,7 +102,10 @@ class ChatPage extends StatelessWidget {
                                 maxLines: 2,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: PRIMARY_COLOR,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color,
                                 ),
                               )
                             ],
@@ -129,6 +135,7 @@ class ChatPage extends StatelessWidget {
                                 context, ChatDetailPage(reciverUser: user));
                           },
                           child: Card(
+                            color: Theme.of(context).scaffoldBackgroundColor,
                             child: Padding(
                               padding: const EdgeInsets.all(MARGIN_MEDIUM),
                               child: Row(
@@ -148,7 +155,11 @@ class ChatPage extends StatelessWidget {
                                             ),
                                             child: Image.network(
                                               '${user?.profilePhoto}',
-                                              fit: BoxFit.fill,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, _, __) {
+                                                return Image.asset(
+                                                    'assets/logo.png');
+                                              },
                                             ),
                                           ),
                                           Positioned(
@@ -186,7 +197,10 @@ class ChatPage extends StatelessWidget {
                                             '${user?.userName}',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              color: PRIMARY_COLOR,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium
+                                                  ?.color,
                                               fontSize: TEXT_REGULAR_2X,
                                             ),
                                           ),
@@ -255,7 +269,7 @@ class AppBarSection extends StatelessWidget {
             fontFamily: YorkieDEMO,
             fontWeight: FontWeight.w600,
             fontSize: TEXT_BIG,
-            color: PRIMARY_COLOR,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
           ),
         ),
         Container(
