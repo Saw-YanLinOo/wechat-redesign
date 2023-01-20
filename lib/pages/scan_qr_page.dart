@@ -98,7 +98,7 @@ class _ScanQrPageState extends State<ScanQrPage> {
             .then((value) {
           controller.dispose();
           if (mounted) {
-            Navigator.pop(qrKey.currentContext ?? context);
+            Navigator.pop(context);
           }
         }).onError((error, stackTrace) {});
       }
@@ -107,7 +107,7 @@ class _ScanQrPageState extends State<ScanQrPage> {
 
   @override
   void dispose() {
-    controller?.dispose();
+    //controller?.dispose();
 
     super.dispose();
   }

@@ -12,8 +12,10 @@ class LoginBloc extends ChangeNotifier {
     setLoading(true);
     return authModel.login(email, password).then((value) {
       setLoading(false);
+      return value;
     }).onError((error, stackTrace) {
       setLoading(false);
+      return Future.error('$error');
     });
   }
 

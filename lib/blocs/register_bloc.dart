@@ -50,10 +50,13 @@ class RegisterBloc extends ChangeNotifier {
     );
 
     // debugPrint(user.toString());
-    return authModel
-        .register(user)
-        .then((value) => setLoading(false))
-        .onError((error, stackTrace) => setLoading(false));
+    return authModel.register(user).then((value) {
+      setLoading(false);
+      return value;
+    }).onError((error, stackTrace) {
+      setLoading(false);
+      return Future.error('$error');
+    });
   }
 
   void setDay(String value) {

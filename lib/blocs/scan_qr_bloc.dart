@@ -28,8 +28,13 @@ class ScanQrBloc extends ChangeNotifier {
       if (currentUser != null && reciverUser != null) {
         return weChatModel
             .addNewContant(currentUser!, reciverUser)
-            .then((value) => setLoading(false))
-            .onError((error, stackTrace) => setLoading(false));
+            .then((value) {
+          setLoading(false);
+          return value;
+        }).onError((error, stackTrace) {
+          setLoading(false);
+          return Future.error('$error');
+        });
       } else {
         setLoading(false);
         return Future.error('User Not Exit');

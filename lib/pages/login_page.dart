@@ -154,6 +154,7 @@ class LoginPage extends StatelessWidget {
                               child: TextButton(
                                 onPressed: () {
                                   bloc.onTapLogin().then((value) {
+                                    debugPrint('value :: $value');
                                     Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
