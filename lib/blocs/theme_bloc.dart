@@ -37,10 +37,10 @@ class ThemeBloc extends ChangeNotifier {
 
     box.put(KEY_THEME, currentTheme);
     notifyListeners();
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const MyApp()),
-        (route) => false);
+    // Navigator.pushAndRemoveUntil(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => const MyApp()),
+    //     (route) => false);
   }
 
 // Theme Color

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -95,9 +96,12 @@ class _PostItemViewState extends State<PostItemView> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      child: Image.network(
-                        '${widget.moment?.profilePicture}',
+                      child: CachedNetworkImage(
+                        imageUrl: '${widget.moment?.profilePicture}',
                         fit: BoxFit.cover,
+                        errorWidget: (context, _, __) {
+                          return Image.asset('assets/logo.png');
+                        },
                       ),
                     ),
                     SizedBox(
@@ -187,7 +191,13 @@ class _PostItemViewState extends State<PostItemView> {
                     decoration: BoxDecoration(
                         borderRadius:
                             BorderRadius.circular(MARGIN_CARD_MEDIUM_2)),
-                    child: Image.network(url ?? ''),
+                    child: CachedNetworkImage(
+                      imageUrl: url ?? '',
+                      fit: BoxFit.cover,
+                      errorWidget: (context, _, __) {
+                        return Image.asset('assets/logo.png');
+                      },
+                    ),
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
