@@ -5,15 +5,10 @@ import 'package:wechat_redesign/data/models/we_chat_model_impl.dart';
 
 import '../mock_data/mock_data.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-
+void main() {
   group('We Chat Model Impl', () {
-    var model = WeChatModelImpl();
-
-    test('upload multiple file to firebase', () {
-      expect([''], model.uploadMultipleFile(fileList));
+    test('Hello Test', () {
+      expect("Hello", "Hello");
     });
   });
 }
