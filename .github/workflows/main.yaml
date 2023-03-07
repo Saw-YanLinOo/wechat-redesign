@@ -18,7 +18,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: 'stable' # 'dev', 'master', default to: 'stable'
-          flutter-version: '3.0.0' # this is your flutter version
+          flutter-version: '3.7.3' # this is your flutter version
       - run: flutter pub get
       
       - run: flutter test # Run widget tests for our flutter project.I'm not run for now.
